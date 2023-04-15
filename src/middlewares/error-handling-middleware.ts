@@ -6,6 +6,7 @@ export function handleApplicationErrors(
   err: ApplicationError | Error,
   _req: Request,
   res: Response,
+  // eslint-disable-next-line
   _next: NextFunction,
 ) {
   if (err.name === 'CannotEnrollBeforeStartDateError') {
