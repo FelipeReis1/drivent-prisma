@@ -34,9 +34,23 @@ async function getTicket(userId: number): Promise<Ticket> {
   });
 }
 
+async function createTicket(enrollmentId: number, ticketTypeId: number) {
+  return prisma.ticket.create({
+    data: {
+      enrollmentId,
+      ticketTypeId,
+      status: 'RESERVED',
+    },
+    include: {
+      TicketType: true,
+    },
+  });
+}
+
 const ticketsRepository = {
   getTicketsTypes,
   getTicket,
+  createTicket,
 };
 
 export default ticketsRepository;

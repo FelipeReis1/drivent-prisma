@@ -21,3 +21,14 @@ export async function getTicket(req: AuthenticatedRequest, res: Response) {
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
+
+export async function createTicket(req: AuthenticatedRequest, res: Response) {
+  const userId = req.userId as number;
+  const { ticketTypeId } = req.body;
+  try {
+    const ticket = await ticketsService.createTicket(userId, ticketTypeId);
+    return res.status(httpStatus.CREATED).send(ticket);
+  } catch (error) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
