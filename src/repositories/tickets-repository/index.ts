@@ -53,11 +53,29 @@ async function getTicketById(id: number): Promise<Ticket> {
   });
 }
 
+async function getTicketTypeById(id: number): Promise<TicketType> {
+  return prisma.ticketType.findFirst({
+    where: { id },
+  });
+}
+async function updateTicket(id: number) {
+  return prisma.ticket.update({
+    where: {
+      id,
+    },
+    data: {
+      status: 'PAID',
+    },
+  });
+}
+
 const ticketsRepository = {
   getTicketsTypes,
   getTicket,
   createTicket,
   getTicketById,
+  getTicketTypeById,
+  updateTicket,
 };
 
 export default ticketsRepository;
