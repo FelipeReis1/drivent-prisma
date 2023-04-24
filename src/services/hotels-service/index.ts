@@ -11,7 +11,7 @@ export async function getHotels(userId: number): Promise<Hotel[]> {
   const ticket = await ticketsRepository.getTicket(userId);
   if (!ticket) throw notFoundError();
 
-  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || ticket.TicketType.includesHotel) throw paymentError();
+  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) throw paymentError();
 
   const hotels = await hotelsRepository.getHotels();
   if (hotels.length === 0) throw notFoundError();
