@@ -8,15 +8,13 @@ export async function getHotels(userId: number): Promise<Hotel[]> {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) throw notFoundError();
 
-  const ticket = await ticketsRepository.getTicket(enrollment.id);
+  const ticket = await ticketsRepository.getTicket(userId);
   if (!ticket) throw notFoundError();
+
+  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || ticket.TicketType.includesHotel) throw paymentError();
 
   const hotels = await hotelsRepository.getHotels();
   if (hotels.length === 0) throw notFoundError();
-
-  const ticketType = await ticketsRepository.getTicketTypeById(ticket.id);
-
-  if (ticket.status !== 'PAID' || ticketType.isRemote || !ticketType.includesHotel) throw paymentError();
 
   return hotels;
 }
