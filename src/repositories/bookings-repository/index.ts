@@ -5,6 +5,10 @@ async function getBooking(userId: number): Promise<Booking & { Room: Room }> {
   return prisma.booking.findFirst({ where: { userId }, include: { Room: true } });
 }
 
-const bookingsRepository = { getBooking };
+async function createBooking(userId: number, roomId: number): Promise<Booking> {
+  return prisma.booking.create({ data: { userId, roomId } });
+}
+
+const bookingsRepository = { getBooking, createBooking };
 
 export default bookingsRepository;
