@@ -10,9 +10,7 @@ async function createBooking(userId: number, roomId: number): Promise<Booking> {
 }
 
 async function getBookingById(bookingId: number): Promise<{ Room: Room }> {
-  const booking = await prisma.booking.findFirst({ select: { Room: true }, where: { id: bookingId } });
-
-  return booking;
+  return prisma.booking.findFirst({ select: { Room: true }, where: { id: bookingId } });
 }
 
 async function updateBooking(userId: number, bookingId: number, roomId: number): Promise<Booking> {
