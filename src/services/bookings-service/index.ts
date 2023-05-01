@@ -48,8 +48,9 @@ export async function updateBooking(userId: number, roomId: number, bookingId: n
   const ticket = await ticketsRepository.getTicket(userId);
   if (!ticket) throw notFoundError();
 
-  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel)
+  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw forbiddenError();
+  }
 
   const room = await hotelRepository.getBookedRoom(roomId);
   if (!room) throw notFoundError();
