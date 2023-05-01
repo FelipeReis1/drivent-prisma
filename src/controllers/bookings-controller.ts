@@ -30,8 +30,8 @@ export async function updateBooking(req: AuthenticatedRequest, res: Response, ne
   const bookingId = req.params.bookingId as string;
 
   try {
-    const updateBooking = await bookingsService.updateBooking(userId, roomId, Number(bookingId));
-    return res.status(httpStatus.OK).send(updateBooking);
+    await bookingsService.updateBooking(userId, roomId, Number(bookingId));
+    return res.status(httpStatus.OK).send({ bookingId: Number(bookingId) });
   } catch (error) {
     next(error);
   }

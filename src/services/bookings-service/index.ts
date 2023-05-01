@@ -28,8 +28,9 @@ export async function createBooking(userId: number, roomId: number) {
   const ticket = await ticketsRepository.getTicket(userId);
   if (!ticket) throw notFoundError();
 
-  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel)
+  if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw forbiddenError();
+  }
 
   const room = await hotelRepository.getBookedRoom(roomId);
   if (!room) throw notFoundError();
@@ -38,7 +39,7 @@ export async function createBooking(userId: number, roomId: number) {
 
   const booking = await bookingsRepository.createBooking(userId, roomId);
 
-  return booking;
+  return booking.id;
 }
 
 export async function updateBooking(userId: number, roomId: number, bookingId: number) {

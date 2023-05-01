@@ -1,4 +1,4 @@
-import { Hotel, Room, Booking } from '@prisma/client';
+import { Hotel, Room } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function getHotels(): Promise<Hotel[]> {
@@ -9,10 +9,14 @@ async function getHotelById(hotelId: number): Promise<Hotel & { Rooms: Room[] }>
   return prisma.hotel.findFirst({ where: { id: hotelId }, include: { Rooms: true } });
 }
 
-async function getBookedRoom(id: number): Promise<Room & { Booking: Booking[] }> {
+async function getBookedRoom(roomId: number) {
   return prisma.room.findFirst({
-    where: { id },
-    include: { Booking: true },
+    where: {
+      id: roomId,
+    },
+    include: {
+      Booking: true,
+    },
   });
 }
 
