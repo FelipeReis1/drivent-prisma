@@ -2,7 +2,6 @@ import { notFoundError, paymentError, forbiddenError } from '@/errors';
 import ticketsRepository from '@/repositories/tickets-repository';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import bookingsRepository from '@/repositories/bookings-repository';
-import hotelRepository from '@/repositories/hotel-repository';
 
 export async function getBooking(userId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
@@ -32,7 +31,7 @@ export async function createBooking(userId: number, roomId: number) {
     throw forbiddenError();
   }
 
-  const room = await hotelRepository.getBookedRoom(roomId);
+  const room = await bookingsRepository.getBookedRoom(roomId);
   if (!room) throw notFoundError();
 
   if (room.capacity <= room.Booking.length) throw forbiddenError();
@@ -53,14 +52,14 @@ export async function updateBooking(userId: number, roomId: number, bookingId: n
     throw forbiddenError();
   }
 
-  const room = await hotelRepository.getBookedRoom(roomId);
+  const room = await bookingsRepository.getBookedRoom(roomId);
   if (!room) {
     throw notFoundError();
   }
 
   if (room.capacity <= room.Booking.length) throw forbiddenError();
 
-  const booking = await bookingsRepository.getBookingById(bookingId);
+  const booking = await bookingsRepository.getBookingById(userId, bookingId);
   if (!booking) throw forbiddenError();
 
   const updateBooking = await bookingsRepository.updateBooking(userId, bookingId, roomId);
