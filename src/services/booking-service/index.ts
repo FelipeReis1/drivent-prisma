@@ -30,7 +30,7 @@ export async function createBooking(userId: number, roomId: number) {
 
   const booking = await bookingsRepository.createBooking(userId, roomId);
 
-  return booking;
+  return booking.id;
 }
 
 export async function updateBooking(userId: number, roomId: number, bookingId: number) {
