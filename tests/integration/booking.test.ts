@@ -16,6 +16,7 @@ import {
   createBooking,
   noHotelTicket,
   remoteTicket,
+  createRoomWithNoCapacity,
 } from '../factories';
 
 import { cleanDb, generateValidToken } from '../helpers';
@@ -193,7 +194,7 @@ describe('POST /booking', () => {
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       await createPayment(ticket.id, ticketType.price);
       const hotel = await createHotel();
-      const room = await createRoom(hotel.id);
+      const room = await createRoomWithNoCapacity(hotel.id);
       await createBooking(user.id, room.id);
 
       const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({ roomId: room.id });
