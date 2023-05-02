@@ -54,7 +54,9 @@ export async function updateBooking(userId: number, roomId: number, bookingId: n
   }
 
   const room = await hotelRepository.getBookedRoom(roomId);
-  if (!room) throw notFoundError();
+  if (!room) {
+    throw notFoundError();
+  }
 
   if (room.capacity <= room.Booking.length) throw forbiddenError();
 
